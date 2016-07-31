@@ -1,4 +1,4 @@
-# GraphQL Event API
+# Easy Events
 
 This is a GraphQL based event api originally created for
 [The Call KC](http://thecallkc.org) to manage all of their volunteer events. It
