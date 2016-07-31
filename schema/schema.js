@@ -41,6 +41,24 @@ const queryType = new GraphQLObjectType({
         }
       },
       resolve: (root, {id}) => organizations[Number(id)]
+    },
+    organizations: {
+      type: new GraphQLList(organizationType),
+      resolve: () => organizations
+    },
+    tag: {
+      type: tagType,
+      args: {
+        id: {
+          description: "id of the tag",
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve: (root, {id}) => tags[Number(id)]
+    },
+    tags: {
+      type: new GraphQLList(tagType),
+      resolve: () => tags
     }
   })
 });
