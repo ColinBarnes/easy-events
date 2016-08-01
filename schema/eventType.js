@@ -16,6 +16,13 @@ const eventType = new GraphQLObjectType({
     id: {
       type: GraphQLString
     },
+    status: {
+      type: GraphQLString,
+      description: "'pending' if the event should not be public yet and it "
+                  + "hasn't been approved. 'approved' if the event has been "
+                  + "reviewed and should be public. 'removed' if the event has "
+                  + "been removed, and it should not be public."
+    },
     title: {
       type: GraphQLString,
       description: "The name of the event"

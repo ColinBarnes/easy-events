@@ -29,6 +29,7 @@ const queryType = new GraphQLObjectType({
       resolve: (root, {id}) => events[Number(id)]
     },
     events: {
+      description: "A list of all of the current approved events.",
       type: new GraphQLList(eventType),
       resolve: () => events
     },
