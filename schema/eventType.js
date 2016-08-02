@@ -4,11 +4,31 @@ import {
   GraphQLInt,
   GraphQLList,
   GraphQLSchema,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLEnumType,
 } from 'graphql';
 
 import tagType from './tagType';
 import organizationType from './organizationType';
+
+const statusEnum = new GraphQLEnumType({
+  name: "Status",
+  description: "A flag to show whether or not the event has been approved.",
+  values: {
+    PENDING: {
+      value: "pending",
+      description: "The event should not be public yet."
+    },
+    APPROVED: {
+      value: "approved",
+      description: "The event has been reviewed and should be public."
+    },
+    REMOVED: {
+      value: "removed",
+      description: "The event has been removed, and it should not be public."
+    }
+  }
+});
 
 const eventType = new GraphQLObjectType({
   name: 'Event',
@@ -17,11 +37,8 @@ const eventType = new GraphQLObjectType({
       type: GraphQLString
     },
     status: {
-      type: GraphQLString,
-      description: "'pending' if the event should not be public yet and it "
-                  + "hasn't been approved. 'approved' if the event has been "
-                  + "reviewed and should be public. 'removed' if the event has "
-                  + "been removed, and it should not be public."
+      type: statusEnum,
+      description: "A flag to show whether or not the event has been approved."
     },
     title: {
       type: GraphQLString,
