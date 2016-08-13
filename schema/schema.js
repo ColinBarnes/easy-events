@@ -12,8 +12,8 @@ import eventType from './eventType';
 import tagType from './tagType';
 import organizationType from './organizationType';
 
-// Sample data
-import {events, tags, organizations}  from './example';
+// Resolver functions
+import {getEvent, getEvents, getOrganization, getOrganizations, getTag, getTags} from './resolvers';
 
 const queryType = new GraphQLObjectType({
   name: 'Query',
@@ -26,12 +26,12 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}) => events[Number(id)]
+      resolve: (root, {id}) => getEvent(id)
     },
     events: {
       description: "A list of all of the current approved events.",
       type: new GraphQLList(eventType),
-      resolve: () => events
+      resolve: () => getEvents()
     },
     organization: {
       type: organizationType,
@@ -41,11 +41,11 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}) => organizations[Number(id)]
+      resolve: (root, {id}) => getOrganization(id)
     },
     organizations: {
       type: new GraphQLList(organizationType),
-      resolve: () => organizations
+      resolve: () => getOrganizations()
     },
     tag: {
       type: tagType,
@@ -55,11 +55,11 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}) => tags[Number(id)]
+      resolve: (root, {id}) => getTag(id)
     },
     tags: {
       type: new GraphQLList(tagType),
-      resolve: () => tags
+      resolve: () => getTags()
     }
   })
 });
