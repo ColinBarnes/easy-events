@@ -12,6 +12,16 @@ import {eventType, eventInputType} from './eventType';
 import {tagType, tagInputType} from './tagType';
 import {organizationType, organizationInputType} from './organizationType';
 
+// Database ====================================================================
+
+import massive from 'massive';
+let db = massive.connectSync({db: 'thecall'});
+
+// Controllers =================================================================
+
+import EventController from '../controllers/eventcontroller';
+let Events = new EventController({db: db});
+
 // Resolver functions
 import {getEvent, getEvents, getOrganization, getOrganizations, getTag, getTags} from './resolvers';
 
@@ -26,12 +36,12 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}) => getEvent(id)
+      resolve: (root, {id}) => Events.getByID(id)
     },
     events: {
       description: "A list of all of the current approved events.",
       type: new GraphQLList(eventType),
-      resolve: () => getEvents()
+      resolve: () => Events.getAll()
     },
     organization: {
       type: organizationType,
