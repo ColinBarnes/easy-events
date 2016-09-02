@@ -76,10 +76,6 @@ const eventType = new GraphQLObjectType({
       type: GraphQLString,
       description: "US postal code"
     },
-    country: {
-      type: GraphQLString,
-      description: "Country"
-    },
     min_people: {
       type: GraphQLInt,
       description: "The minimum number of people needed for the event"
