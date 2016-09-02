@@ -75,6 +75,22 @@ const mutationType = new GraphQLObjectType({
         event: {type: eventInputType}
       },
       resolve: (root, {event}) => event
+    },
+    creatOrganization: {
+      type: organizationType,
+      description: 'Add a new organization',
+      args: {
+        organization: {type: organizationInputType}
+      },
+      resolve: (root, {organization}) => organization
+    },
+    createTag: {
+      type: tagType,
+      description: 'Add a new tag',
+      args: {
+        tag: {type: tagInputType}
+      },
+      resolve: (root, {tag}) => tag
     }
   })
 });
