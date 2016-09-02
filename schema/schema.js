@@ -8,9 +8,9 @@ import {
 } from 'graphql';
 
 // Manually definted types
-import eventType from './eventType';
-import tagType from './tagType';
-import organizationType from './organizationType';
+import {eventType, eventInputType} from './eventType';
+import {tagType, tagInputType} from './tagType';
+import {organizationType, organizationInputType} from './organizationType';
 
 // Resolver functions
 import {getEvent, getEvents, getOrganization, getOrganizations, getTag, getTags} from './resolvers';
@@ -64,6 +64,22 @@ const queryType = new GraphQLObjectType({
   })
 });
 
+const mutationType = new GraphQLObjectType({
+  name: 'Mutations',
+  descriptions: 'All of the possible changes',
+  fields: () => ({
+    createEvent: {
+      type: eventType,
+      description: 'Add a new event',
+      args: {
+        event: {type: eventInputType}
+      },
+      resolve: (root, {event}) => event
+    }
+  })
+});
+
 export const EventSchema = new GraphQLSchema({
-  query: queryType
+  query: queryType,
+  mutation: mutationType
 });

@@ -1,10 +1,11 @@
 import {
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLString,
   GraphQLNonNull
 } from 'graphql';
 
-const organizationType = new GraphQLObjectType({
+export const organizationType = new GraphQLObjectType({
   name: 'Organization',
   fields: () => ({
     id: {
@@ -21,4 +22,19 @@ const organizationType = new GraphQLObjectType({
   })
 });
 
-export default organizationType;
+export const organizationInputType = new GraphQLInputObjectType({
+  name: 'OrganizationInput',
+  fields: () => ({
+    id: {
+      type: GraphQLString
+    },
+    name: {
+      type: GraphQLString,
+      description: "The name of the organization"
+    },
+    description: {
+      type: GraphQLString,
+      description: "A description of the organization"
+    }
+  })
+});

@@ -1,10 +1,11 @@
 import {
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLString,
   GraphQLNonNull
 } from 'graphql';
 
-const tagType = new GraphQLObjectType({
+export const tagType = new GraphQLObjectType({
   name: 'Tag',
   fields: () =>({
     id: {
@@ -17,4 +18,15 @@ const tagType = new GraphQLObjectType({
   })
 });
 
-export default tagType;
+export const tagInputType = new GraphQLInputObjectType({
+  name: 'TagInput',
+  fields: () =>({
+    id: {
+      type: GraphQLString
+    },
+    tag: {
+      type: GraphQLString,
+      description: "A tag"
+    }
+  })
+});

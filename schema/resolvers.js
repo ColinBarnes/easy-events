@@ -1,6 +1,6 @@
 import massive from 'massive';
 
-let db = massive.connectSync({db: 'thecall'});
+// let db = massive.connectSync({db: 'thecall'});
 
 // Sample data
 import {events, tags, organizations}  from './example';
