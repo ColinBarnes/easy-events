@@ -29,7 +29,7 @@ class EventController {
   *  organization_id
   *  [event]
   */
-  getByOrganizationID(id) {
+  getByOrganizationID(organization_id) {
     return '';
   }
 
@@ -38,7 +38,7 @@ class EventController {
   *  tag_id
   *  [event]
   */
-  getByTagID(id) {
+  getByTagID(tag_id) {
     return '';
   }
 }

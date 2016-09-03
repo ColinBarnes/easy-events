@@ -19,8 +19,11 @@ let db = massive.connectSync({db: 'thecall'});
 
 // Controllers =================================================================
 
-import EventController from '../controllers/eventcontroller';
+import EventController from '../controllers/event';
+import OrganizationController from '../controllers/organization';
+
 let Events = new EventController({db: db});
+let Organizations = new OrganizationController({db: db});
 
 // Resolver functions
 import {getEvent, getEvents, getOrganization, getOrganizations, getTag, getTags} from './resolvers';
@@ -51,11 +54,11 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}) => getOrganization(id)
+      resolve: (root, {id}) => Organizations.getByID(id)
     },
     organizations: {
       type: new GraphQLList(organizationType),
-      resolve: () => getOrganizations()
+      resolve: () => Organizations.getAll()
     },
     tag: {
       type: tagType,
