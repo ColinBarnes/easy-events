@@ -6,10 +6,23 @@ class EventController {
     this.db = options.db;
   }
 
+  // Create ====================================================================
+
+  /*
+  *  Add a new event
+  *  @param event
+  *  @return event
+  */
+  create(event) {
+    return event;
+  }
+
+  // Read ======================================================================
+
   /*
   *  Get event by id
-  *  id
-  *  event
+  *  @param id
+  *  @return event
   */
   getByID(id) {
     return getEvent(id);
@@ -17,8 +30,7 @@ class EventController {
 
   /*
   *  Get all events
-  *
-  *  [event]
+  *  @return {Object[]} events
   */
   getAll() {
     return getEvents();
@@ -26,8 +38,8 @@ class EventController {
 
   /*
   *  Get a list of events by organization id
-  *  organization_id
-  *  [event]
+  *  @param organization_id
+  *  @return {Object[]} events
   */
   getByOrganizationID(organization_id) {
     return '';
@@ -35,12 +47,16 @@ class EventController {
 
   /*
   *  Get a list of events by tag id
-  *  tag_id
-  *  [event]
+  *  @param tag_id
+  *  @return {Object[]} events
   */
   getByTagID(tag_id) {
     return '';
   }
+
+  // Update ====================================================================
+
+  // Delete ====================================================================
 }
 
 export default EventController;

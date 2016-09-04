@@ -6,6 +6,19 @@ class OrganizationController {
     this.db = options.db;
   }
 
+  // Create ====================================================================
+
+  /*
+  *  Add a new organization
+  *  @param org
+  *  @return org
+  */
+  create(org) {
+    return org;
+  }
+
+  // Read ======================================================================
+
   /*
   *  Get organization by id
   *  id
@@ -41,6 +54,11 @@ class OrganizationController {
   getByTagID(id) {
     return '';
   }
+
+  // Update ====================================================================
+
+  // Delete ====================================================================
+
 }
 
 export default OrganizationController;

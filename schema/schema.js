@@ -88,7 +88,7 @@ const mutationType = new GraphQLObjectType({
       args: {
         event: {type: eventInputType}
       },
-      resolve: (root, {event}) => event
+      resolve: (root, {event}) => Events.create(event)
     },
     creatOrganization: {
       type: organizationType,
@@ -96,7 +96,7 @@ const mutationType = new GraphQLObjectType({
       args: {
         organization: {type: organizationInputType}
       },
-      resolve: (root, {organization}) => organization
+      resolve: (root, {organization}) => Organizations.create(organization)
     },
     createTag: {
       type: tagType,
@@ -104,7 +104,7 @@ const mutationType = new GraphQLObjectType({
       args: {
         tag: {type: tagInputType}
       },
-      resolve: (root, {tag}) => tag
+      resolve: (root, {tag}) => Tags.create(tag)
     }
   })
 });

@@ -6,6 +6,19 @@ class TagController {
     this.db = options.db;
   }
 
+  // Create ====================================================================
+
+  /*
+  *  Add a new tag
+  *  @param tag
+  *  @return tag
+  */
+  create(tag) {
+    return tag;
+  }
+
+  // Read ======================================================================
+
   /*
   *  Get tag by id
   *  id
@@ -41,6 +54,10 @@ class TagController {
   getByEventID(tag_id) {
     return '';
   }
+
+  // Update ====================================================================
+
+  // Delete ====================================================================
 }
 
 export default TagController;
