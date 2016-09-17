@@ -11,6 +11,7 @@ import {
 
 import {tagType, tagInputType} from './tagType';
 import {organizationType, organizationInputType} from './organizationType';
+import {DateTimeType} from './utilityTypes';
 
 const statusEnum = new GraphQLEnumType({
   name: "Status",
@@ -35,18 +36,18 @@ export const eventType = new GraphQLObjectType({
   name: 'Event',
   fields: () => ({
     id: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     status: {
       type: statusEnum,
       description: "A flag to show whether or not the event has been approved."
     },
     title: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description: "The name of the event"
     },
     description: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description: "A description of the event"
     },
     organization: {
@@ -54,12 +55,12 @@ export const eventType = new GraphQLObjectType({
       description: "The organization hosting the event"
     },
     start_time: {
-      type: GraphQLString,
-      description: "Starting date and time of the event in ISO 8601 format"
+      type: DateTimeType,
+      description: "Starting date and time of the event"
     },
     end_time: {
-      type: GraphQLString,
-      description: "Ending date and time of the event in ISO 8601 format"
+      type: DateTimeType,
+      description: "Ending date and time of the event"
     },
     address: {
       type: GraphQLString,
@@ -97,11 +98,11 @@ export const eventInputType = new GraphQLInputObjectType({
   name: 'EventInput',
   fields: () => ({
     title: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description: "The name of the event"
     },
     description: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       description: "A description of the event"
     },
     organization: {
@@ -109,11 +110,11 @@ export const eventInputType = new GraphQLInputObjectType({
       description: "The organization hosting the event"
     },
     start_time: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(DateTimeType),
       description: "Starting date and time of the event in ISO 8601 format"
     },
     end_time: {
-      type: GraphQLString,
+      type: DateTimeType,
       description: "Ending date and time of the event in ISO 8601 format"
     },
     address: {
