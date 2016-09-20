@@ -1,5 +1,6 @@
 BEGIN;
 
+
 CREATE TABLE tagmap (
   event_id uuid NOT NULL,
   tag_id uuid NOT NULL,

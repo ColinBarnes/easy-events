@@ -1,7 +1,9 @@
 BEGIN;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE events(
-  id uuid NOT NULL,
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
   status_id serial NOT NULL,
   title text,
   description text,
