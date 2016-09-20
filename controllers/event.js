@@ -50,7 +50,7 @@ class EventController {
 
       let findOrSaveOrg = () => {
         // If org id is supplied
-        if(org && org.hasOwnProperty(id)){
+        if(org && org.hasOwnProperty('id')){
           // verify that the org already exists
           this.db.organizations.findOne(org.id, (err, res) => {
             if(err) {
