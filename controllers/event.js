@@ -81,7 +81,10 @@ class EventController {
       *  and all tag ids are in tag_ids.
       */
       let findOrSaveTags = (count, max) => {
+        console.log("tags: " + tags);
+        console.log(`count: ${count} max: ${max}`);
         if(count < max) {
+          console.log(`(In IF) count: ${count} max: ${max}`);
           // If tag already exists
           if(tags[count].id) {
             this.db.tags.findOne(tags[count].id, (err, res) => {
@@ -92,7 +95,8 @@ class EventController {
                 findOrSaveTags(++count,max);
               }
             });
-          } else if(count > 0){
+          } else if(max > 0){
+            console.log("current tag: " + tags[count]);
             this.db.tags.save(tags[count], (err, res) => {
               if(err) {
                 throw new GraphQLError(`Could not save tag: ${tag[count]}`);
