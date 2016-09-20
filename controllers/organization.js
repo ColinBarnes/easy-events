@@ -14,7 +14,12 @@ class OrganizationController {
   *  @return org
   */
   create(org) {
-    return org;
+    db.organizations.save(org, (err, res) => {
+      if(err) {
+        // handle org save error
+      }
+      return this.getByID(res.id);
+    });
   }
 
   // Read ======================================================================

@@ -88,7 +88,12 @@ const mutationType = new GraphQLObjectType({
       args: {
         event: {type: eventInputType}
       },
-      resolve: (root, {event}) => Events.create(event)
+      resolve: (root, {event}) => {
+        let resp = Events.create(event);
+        console.log("Mutation response: ");
+        console.log(resp);
+        return resp;
+      }
     },
     creatOrganization: {
       type: organizationType,

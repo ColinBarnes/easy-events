@@ -14,7 +14,12 @@ class TagController {
   *  @return tag
   */
   create(tag) {
-    return tag;
+    db.tags.save(tag, (err, res) => {
+      if(err) {
+        // handle tag save error
+      }
+      return this.getByID(res.id);
+    });
   }
 
   // Read ======================================================================
@@ -25,7 +30,12 @@ class TagController {
   *  tag
   */
   getByID(id) {
-    return getTag(id);
+    db.tags.findOne(id, (err, tag) => {
+      if(err) {
+        // handle can't find err
+      }
+      return tag;
+    });
   }
 
   /*
