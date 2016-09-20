@@ -9,7 +9,7 @@ import {
   GraphQLInputObjectType
 } from 'graphql';
 
-import {tagType, tagInputType} from './tagType';
+import {tagType, tagAttributesInputType} from './tagType';
 import {organizationType, organizationAttributesInputType} from './organizationType';
 import {DateTimeType} from './utilityTypes';
 
@@ -142,7 +142,7 @@ export const eventInputType = new GraphQLInputObjectType({
       description: "The maximum number of people needed for the event, 0 if there is no maximum"
     },
     tags: {
-      type: new GraphQLList(tagInputType),
+      type: new GraphQLList(tagAttributesInputType),
       description: "A list of tags associated with the event"
     }
   })

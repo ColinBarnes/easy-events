@@ -14,11 +14,13 @@ class TagController {
   *  @return tag
   */
   create(tag) {
-    db.tags.save(tag, (err, res) => {
-      if(err) {
-        // handle tag save error
-      }
-      return this.getByID(res.id);
+    return new Promise((resolve, reject) => {
+      this.db.tags.save(tag, (err, res) => {
+        if(err) {
+          throw new GraphQLError(`Error saving tag: ${tag}`)
+        }
+        resolve(this.getByID(res.id));
+      });
     });
   }
 
@@ -30,11 +32,13 @@ class TagController {
   *  tag
   */
   getByID(id) {
-    db.tags.findOne(id, (err, tag) => {
-      if(err) {
-        // handle can't find err
-      }
-      return tag;
+    return new Promise((resolve, reject) => {
+      this.db.tags.findOne(id, (err, tag) => {
+        if(err) {
+          throw new GraphQLError(`Error finding tag with id: ${id}`);
+        }
+        resolve(tag);
+      });
     });
   }
 
