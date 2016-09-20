@@ -22,12 +22,26 @@ export const organizationType = new GraphQLObjectType({
   })
 });
 
-export const organizationInputType = new GraphQLInputObjectType({
-  name: 'OrganizationInput',
+export const organizationAttributesInputType = new GraphQLInputObjectType({
+  name: 'OrganizationAttributesInput',
   fields: () => ({
     id: {
       type: GraphQLString
     },
+    name: {
+      type: GraphQLString,
+      description: "The name of the organization"
+    },
+    description: {
+      type: GraphQLString,
+      description: "A description of the organization"
+    }
+  })
+});
+
+export const organizationInputType = new GraphQLInputObjectType({
+  name: 'OrganizationInput',
+  fields: () => ({
     name: {
       type: GraphQLString,
       description: "The name of the organization"

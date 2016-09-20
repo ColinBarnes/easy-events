@@ -14,11 +14,13 @@ class OrganizationController {
   *  @return org
   */
   create(org) {
-    db.organizations.save(org, (err, res) => {
-      if(err) {
-        // handle org save error
-      }
-      return this.getByID(res.id);
+    return new Promise((resolve, reject) => {
+      this.db.organizations.save(org, (err, res) => {
+        if(err) {
+          throw new GraphQLError(`Could not save organization: ${org}`);
+        }
+        resolve(this.getByID(res.id));
+      });
     });
   }
 
@@ -30,7 +32,14 @@ class OrganizationController {
   *  organization
   */
   getByID(id) {
-    return getOrganization(id);
+    return new Promise((resolve, reject) => {
+      this.db.organizations.findOne(id, (err, org) => {
+        if(err) {
+          throw new GraphQLError(`Error retrieving organization with id: ${id}`);
+        }
+        resolve(org);
+      });
+    });
   }
 
   /*

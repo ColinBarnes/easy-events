@@ -10,7 +10,7 @@ import {
 } from 'graphql';
 
 import {tagType, tagInputType} from './tagType';
-import {organizationType, organizationInputType} from './organizationType';
+import {organizationType, organizationAttributesInputType} from './organizationType';
 import {DateTimeType} from './utilityTypes';
 
 const statusEnum = new GraphQLEnumType({
@@ -106,7 +106,7 @@ export const eventInputType = new GraphQLInputObjectType({
       description: "A description of the event"
     },
     organization: {
-      type: organizationInputType,
+      type: organizationAttributesInputType,
       description: "The organization hosting the event"
     },
     start_time: {
