@@ -15,11 +15,11 @@ class TagController {
   */
   create(tag) {
     return new Promise((resolve, reject) => {
-      this.db.tags.save(tag, (err, res) => {
+      this.db.tags.save(tag, (err, _tag) => {
         if(err) {
           throw new GraphQLError(`Error saving tag: ${tag}`)
         }
-        resolve(this.getByID(res.id));
+        resolve(_tag);
       });
     });
   }
@@ -48,7 +48,14 @@ class TagController {
   *  [tag]
   */
   getAll() {
-    return getTags();
+    return new Promise((resolve, reject) => {
+      this.db.tags.find({},{limit: 20}, (err, tags) =>{
+        if(err) {
+          throw new GraphQLError(`Error returning all tags`);
+        }
+        resolve(tags);
+      });
+    });
   }
 
   /*

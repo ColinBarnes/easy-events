@@ -12,21 +12,6 @@ import {eventType, eventInputType} from './eventType';
 import {tagType, tagInputType} from './tagType';
 import {organizationType, organizationInputType} from './organizationType';
 
-// Database ====================================================================
-
-import massive from 'massive';
-let db = massive.connectSync({db: 'thecall'});
-
-// Controllers =================================================================
-
-import EventController from '../controllers/event';
-import OrganizationController from '../controllers/organization';
-import TagController from '../controllers/tag';
-
-let Events = new EventController({db: db});
-let Organizations = new OrganizationController({db: db});
-let Tags = new TagController({db: db});
-
 // Schema ======================================================================
 
 const queryType = new GraphQLObjectType({
@@ -40,7 +25,7 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}) => Events.getByID(id)
+      resolve: (root, {id}, ctx) => ctx.Events.getByID(id)
     },
     events: {
       description: "A list of all of the current approved events.",
@@ -55,7 +40,7 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}) => Organizations.getByID(id)
+      resolve: (root, {id}, ctx) => ctx.Organizations.getByID(id)
     },
     organizations: {
       type: new GraphQLList(organizationType),
@@ -69,7 +54,7 @@ const queryType = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}) => Tags.getByID(id)
+      resolve: (root, {id}, ctx) => ctx.Tags.getByID(id)
     },
     tags: {
       type: new GraphQLList(tagType),
@@ -88,12 +73,7 @@ const mutationType = new GraphQLObjectType({
       args: {
         event: {type: eventInputType}
       },
-      resolve: (root, {event}) => {
-        let resp = Events.create(event);
-        console.log("Mutation response: ");
-        console.log(resp);
-        return resp;
-      }
+      resolve: (root, {event}, ctx) => ctx.Events.create(event)
     },
     creatOrganization: {
       type: organizationType,
@@ -101,7 +81,7 @@ const mutationType = new GraphQLObjectType({
       args: {
         organization: {type: organizationInputType}
       },
-      resolve: (root, {organization}) => Organizations.create(organization)
+      resolve: (root, {organization}, ctx) => ctx.Organizations.create(organization)
     },
     createTag: {
       type: tagType,
@@ -109,7 +89,7 @@ const mutationType = new GraphQLObjectType({
       args: {
         tag: {type: tagInputType}
       },
-      resolve: (root, {tag}) => Tags.create(tag)
+      resolve: (root, {tag}, ctx) => ctx.Tags.create(tag)
     }
   })
 });
