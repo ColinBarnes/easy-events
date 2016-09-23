@@ -180,7 +180,14 @@ class EventController {
   *  @return {Object[]} events
   */
   getAll() {
-    return getEvents();
+    return new Promise((resolve, reject) => {
+      this.db.events.find({},{limit: 20}, (err, events) =>{
+        if(err) {
+          throw new GraphQLError(`Error returning all events`);
+        }
+        resolve(events);
+      });
+    });
   }
 
   /*

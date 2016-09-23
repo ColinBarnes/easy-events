@@ -30,7 +30,7 @@ const queryType = new GraphQLObjectType({
     events: {
       description: "A list of all of the current approved events.",
       type: new GraphQLList(eventType),
-      resolve: () => Events.getAll()
+      resolve: (root, args, ctx) => ctx.Events.getAll()
     },
     organization: {
       type: organizationType,
@@ -44,7 +44,7 @@ const queryType = new GraphQLObjectType({
     },
     organizations: {
       type: new GraphQLList(organizationType),
-      resolve: () => Organizations.getAll()
+      resolve: (root, args, ctx) => ctx.Organizations.getAll()
     },
     tag: {
       type: tagType,
@@ -58,7 +58,7 @@ const queryType = new GraphQLObjectType({
     },
     tags: {
       type: new GraphQLList(tagType),
-      resolve: () => Tags.getAll()
+      resolve: (root, args, ctx) => ctx.Tags.getAll()
     }
   })
 });
