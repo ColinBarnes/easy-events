@@ -64,7 +64,14 @@ class OrganizationController {
   *  organization
   */
   getByEventID(event_id) {
-    return '';
+    return new Promise((resolve, reject) => {
+      this.db.organizationByEventId(event_id, (err, org_arr) => {
+        if(err) {
+          throw new GraphQLError(`Error returning all organization by id: ${event_id}`);
+        }
+        resolve(org_arr[0]);
+      });
+    });
   }
 
   /*

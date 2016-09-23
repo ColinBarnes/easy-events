@@ -52,7 +52,8 @@ export const eventType = new GraphQLObjectType({
     },
     organization: {
       type: organizationType,
-      description: "The organization hosting the event"
+      description: "The organization hosting the event",
+      resolve: (root, args, ctx) => ctx.Organizations.getByEventID(root.id)
     },
     start_time: {
       type: DateTimeType,
@@ -88,7 +89,8 @@ export const eventType = new GraphQLObjectType({
     },
     tags: {
       type: new GraphQLList(tagType),
-      description: "A list of tags associated with the event"
+      description: "A list of tags associated with the event",
+      resolve: (root, args, ctx) => ctx.Tags.getByEventID(root.id)
     }
 
   })
