@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql';
 // Mock data
 import {getTag, getTags} from '../schema/resolvers';
 
@@ -51,6 +52,7 @@ class TagController {
     return new Promise((resolve, reject) => {
       this.db.tags.find({},{limit: 20}, (err, tags) =>{
         if(err) {
+          console.log(err);
           throw new GraphQLError(`Error returning all tags`);
         }
         resolve(tags);
@@ -72,8 +74,16 @@ class TagController {
   *  event_id
   *  [tag]
   */
-  getByEventID(tag_id) {
-    return '';
+  getByEventID(event_id) {
+    return new Promise((resolve, reject) => {
+      this.db.tagsByEventId(event_id, (err, tags) => {
+        if(err) {
+          console.log(err);
+          throw new GraphQLError(`Error returning tags by event id: ${event_id}`);
+        }
+        resolve(tags);
+      });
+    });
   }
 
   // Update ====================================================================

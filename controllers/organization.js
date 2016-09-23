@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql';
 // Mock data
 import {getOrganization, getOrganizations} from '../schema/resolvers';
 

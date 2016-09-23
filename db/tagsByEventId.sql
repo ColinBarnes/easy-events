@@ -1,7 +1,7 @@
-SELECT tags.id AS tag_id, tags.tag AS tag, events.id AS event_id
+SELECT tags.id AS id, tags.tag AS tag
 FROM tags
 INNER JOIN tagmap
 ON tagmap.tag_id = tags.id
 INNER JOIN events
 ON events.id = tagmap.event_id
-WHERE event.id = $1;
+WHERE events.id = $1;
