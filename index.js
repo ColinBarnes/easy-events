@@ -13,16 +13,11 @@ import EventController from './controllers/event';
 import OrganizationController from './controllers/organization';
 import TagController from './controllers/tag';
 
-let Events = new EventController({db: db});
-let Organizations = new OrganizationController({db: db});
-let Tags = new TagController({db: db});
+let ctx = {};
 
-let ctx = {
-  db: db,
-  Events: Events,
-  Organizations: Organizations,
-  Tags: Tags
-}
+ctx.Events = new EventController({db: db, ctx: ctx});
+ctx.Organizations = new OrganizationController({db: db, ctx: ctx});
+ctx.Tags = new TagController({db: db, ctx: ctx});
 
 
 let app = express();

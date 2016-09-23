@@ -5,6 +5,7 @@ import {getOrganization, getOrganizations} from '../schema/resolvers';
 class OrganizationController {
   constructor(options) {
     this.db = options.db;
+    this.ctx = options.ctx;
   }
 
   // Create ====================================================================

@@ -6,6 +6,7 @@ import {getEvent, getEvents} from '../schema/resolvers';
 class EventController {
   constructor(options) {
     this.db = options.db;
+    this.ctx = options.ctx;
   }
 
   // Create ====================================================================

@@ -5,6 +5,7 @@ import {getTag, getTags} from '../schema/resolvers';
 class TagController {
   constructor(options) {
     this.db = options.db;
+    this.ctx = options.ctx;
   }
 
   // Create ====================================================================
