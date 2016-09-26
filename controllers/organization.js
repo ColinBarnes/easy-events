@@ -26,6 +26,24 @@ class OrganizationController {
     });
   }
 
+  findOrSave(org) {
+    // If org id is supplied
+    if(org.hasOwnProperty('id')){
+      return new Promise((resolve, reject) => {
+        // verify that the org already exists
+        this.db.organizations.findOne(org.id, (err, _org) => {
+          if(err) {
+            throw new GraphqLError(`Can't find organization with id: ${org.id}`);
+          }
+          resolve(_org);
+        });
+      });
+    } else {
+      delete org.id;
+      return this.create(org);
+    }
+  }
+
   // Read ======================================================================
 
   /*

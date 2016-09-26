@@ -17,144 +17,82 @@ class EventController {
   *  @return event
   */
   create(event) {
-    return new Promise((resolve, reject) => {
-      console.log("creating event");
-      console.log(event);
-      if(isNaN(Date.parse(event.start_time))) {
-        throw new GraphQLError(`start_time "${event.start_time}" is not a valid date`);
-      }
-      /*
-      *  Creating an event requires a bunch of asynchronous calls. The end order
-      *  of events will be:
-      *  1. Grab the pending event id
-      *  2. Get the org id
-      *  3. Get all of the tag ids
-      *  4. Save the event and get the event id
-      *  5. Map all of the tag ids to the event id
-      *  6. Return the fully formed event object
-      */
+    /*
+    *  Creating an event requires a bunch of asynchronous calls. The end order
+    *  of events will be:
+    *  1. Grab the "pending" status id
+    *  2. Get the org id
+    *  3. Get all of the tag ids
+    *  4. Save the event and get the event id
+    *  5. Map all of the tag ids to the event id
+    *  6. Return the fully formed event object
+    */
 
-      /*
-      *  Strip out org. If it has the id property, it's an existing org.
-      *  Otherwise, it needs to be saved and an id retrieved.
-      */
-      let org = event.organization;
-      delete event.organization;
+    // Strip out the org
+    let org = event.organization;
+    delete event.organization;
 
-      /*
-      *  Strip out tags. If they have an id property, it's an existing tag.
-      *  Otherwise, it they will need to be saved and an id retrieved.
-      */
-      let tags = event.tags || [];
-      delete event.tags;
-      let tag_ids = [];
+    //  Strip out tags
+    let tags = event.tags;
+    delete event.tags;
 
-      let findOrSaveOrg = () => {
-        // If org id is supplied
-        if(org && org.hasOwnProperty('id')){
-          // verify that the org already exists
-          this.db.organizations.findOne(org.id, (err, res) => {
-            if(err) {
-              //throw new GraphqLError(`Can't find organization with id: ${org.id}`);
-              // handle can't find org with this id error
-            } else {
-              event.organization_id = org.id;
-              findOrSaveTags(0, tags.length);
-            }
-          });
-        } else if(org){
-          // if org does not exist, add as a new organization
-          this.db.organizations.save(org, (err, res) => {
-            if(err) {
-              throw new GraphQLError(`Could not save organization: ${org}`);
-            }
-            event.organization_id = res.id;
-            findOrSaveTags(0, tags.length);
-          });
-        } else {
-          // No org
-          findOrSaveTags(0, tags.length);
+    // Set the event status to pending
+    let status = new Promise((resolve, reject) => {
+      this.db.status.findOne({status: 'pending'}, (err, _status) => {
+        if(err){
+          console.log(err);
+          throw new GraphqLError("Error setting event status");
         }
-      }
-
-      /*
-      *  Called recursively till all tags are saved,
-      *  and all tag ids are in tag_ids.
-      */
-      let findOrSaveTags = (count, max) => {
-        if(count < max) {
-          // If tag already exists
-          if(tags[count].id) {
-            this.db.tags.findOne(tags[count].id, (err, res) => {
-              if(err){
-                // handle can't find tag with this id error
-              } else {
-                tag_ids.push(tags[count].id);
-                findOrSaveTags(++count,max);
-              }
-            });
-          } else if(max > 0){
-            this.db.tags.save(tags[count], (err, res) => {
-              if(err) {
-                throw new GraphQLError(`Could not save tag: ${tag[count]}`);
-              }
-              tag_ids.push(res.id);
-              findOrSaveTags(++count, max);
-            });
-          } else {
-            // No tags
-            saveEvent();
-          }
-        } else {
-          saveEvent();
-        }
-      }
-
-      let saveEvent = () => {
-        this.db.events.save(event, (err, saved_event) => {
-          if(err) {
-            throw err;
-            // handle save event error
-            console.log("save event error");
-          }
-          if(tag_ids.length > 0) {
-            /*
-            *  Map tags to event
-            */
-            let all_tags = tag_ids.map((tag_id) => ({event_id: saved_event.id, tag_id: tag_id}));
-
-            this.db.tagmap.save(all_tags, (err, res) => {
-              if(err) {
-                // handle tag map save error
-                console.log("save tag map error");
-              }
-              console.log("Promise:")
-              let prom = this.getByID(saved_event.id);
-              console.log(prom);
-              // return the fully formed event object
-              resolve(prom);
-            });
-          } else {
-            console.log("Promise:")
-            let prom = this.getByID(saved_event.id);
-            console.log(prom);
-            // return the fully formed event object
-            resolve(prom);
-          }
-        });
-      }
-
-      /*
-      *  Set the event status to pending
-      */
-      this.db.status.findOne({status: 'pending'}, (err, res) => {
-        if(err){console.log("error finding status");}
-        console.log(res);
-        event.status_id = res.id;
-        findOrSaveOrg();
+        resolve(_status);
       });
     });
 
+    // Attach the org to the event if an org is submitted
+    return status.then((_status) => {
+      event.status_id = _status.id;
+
+      // If an org was sent with the request, associate to the event
+      if(org) {
+        return this.ctx.Organizations.findOrSave(org)
+          .then((_org) => {
+            event.organization_id = _org.id;
+          });
+      }
+    // Save the event
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        this.db.events.save(event, (err, _event) => {
+          if(err) {
+            console.log(err);
+            throw new GraphQLError("There was an error saving the event");
+          }
+          resolve(_event);
+        });
+      });
+    }).then((_event) => {
+      if(tags) {
+        // Save the tags
+        let tag_promises = tags.map((tag) => this.ctx.Tags.findOrSave(tag));
+
+        // Map the tags to the event
+        return Promise.all(tag_promises).then((_tags) => {
+          let tag_map = _tags.map((tag) => ({event_id: _event.id, tag_id: tag.id}));
+
+          return new Promise((resolve, reject) => {
+            this.db.tagmap.save(tag_map, (err, res) => {
+              if(err) {
+                console.log(err);
+                throw new GraphQLError("Error mapping tags to event");
+              }
+              resolve(_event);
+            });
+          });
+        });
+      }
+      return _event;
+    }).then((_event) => {
+      return _event;
+    });
   }
 
   // Read ======================================================================
@@ -167,7 +105,10 @@ class EventController {
   getByID(id) {
     return new Promise((resolve, reject) => {
       this.db.events.findOne(id, (err, event) => {
-        if(err) { console.log("Error finding event");}
+        if(err) {
+          console.log(err);
+          throw new GraphQLError(`Error retrieving event with id: ${id}`);
+        }
         delete event.status_id;
         delete event.organization_id;
         console.log(event);
