@@ -7,6 +7,7 @@ class EventController {
   constructor(options) {
     this.db = options.db;
     this.ctx = options.ctx;
+    this.log = this.ctx.log;
   }
 
   // Create ====================================================================
@@ -119,6 +120,7 @@ class EventController {
   *  @return {Object[]} events
   */
   getAll() {
+    this.log.info("test");
     return new Promise((resolve, reject) => {
       this.db.events.find({}, (err, events) =>{
         if(err) {
