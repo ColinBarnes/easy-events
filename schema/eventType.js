@@ -40,7 +40,8 @@ export const eventType = new GraphQLObjectType({
     },
     status: {
       type: statusEnum,
-      description: "A flag to show whether or not the event has been approved."
+      description: "A flag to show whether or not the event has been approved.",
+      resolve: (root, args, ctx) => ctx.Events.getStatusById(root.id)
     },
     title: {
       type: new GraphQLNonNull(GraphQLString),

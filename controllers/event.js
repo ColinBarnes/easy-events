@@ -109,9 +109,6 @@ class EventController {
           console.log(err);
           throw new GraphQLError(`Error retrieving event with id: ${id}`);
         }
-        delete event.status_id;
-        delete event.organization_id;
-        console.log(event);
         resolve(event);
       });
     });
@@ -123,8 +120,9 @@ class EventController {
   */
   getAll() {
     return new Promise((resolve, reject) => {
-      this.db.events.find({},{limit: 20}, (err, events) =>{
+      this.db.events.find({}, (err, events) =>{
         if(err) {
+          console.log(err);
           throw new GraphQLError(`Error returning all events`);
         }
         resolve(events);
@@ -150,6 +148,17 @@ class EventController {
     return '';
   }
 
+  getStatusById(event_id) {
+    return new Promise((resolve, reject) => {
+      this.db.statusByEventId(event_id, (err, status) => {
+        if(err) {
+          console.log(err);
+          throw new GraphQLError(`Error retrieving status for event with id: ${id}`);
+        }
+        resolve(status[0].status);
+      });
+    });
+  }
   // Update ====================================================================
 
   // Delete ====================================================================
