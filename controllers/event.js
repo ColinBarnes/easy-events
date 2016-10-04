@@ -41,7 +41,7 @@ class EventController {
     let status = new Promise((resolve, reject) => {
       this.db.status.findOne({status: 'pending'}, (err, _status) => {
         if(err){
-          console.log(err);
+          this.log.error(err);
           throw new GraphqLError("Error setting event status");
         }
         resolve(_status);
@@ -64,7 +64,7 @@ class EventController {
       return new Promise((resolve, reject) => {
         this.db.events.save(event, (err, _event) => {
           if(err) {
-            console.log(err);
+            this.log.error(err);
             throw new GraphQLError("There was an error saving the event");
           }
           resolve(_event);
@@ -82,7 +82,7 @@ class EventController {
           return new Promise((resolve, reject) => {
             this.db.tagmap.save(tag_map, (err, res) => {
               if(err) {
-                console.log(err);
+                this.log.error(err);
                 throw new GraphQLError("Error mapping tags to event");
               }
               resolve(_event);
@@ -107,7 +107,7 @@ class EventController {
     return new Promise((resolve, reject) => {
       this.db.events.findOne(id, (err, event) => {
         if(err) {
-          console.log(err);
+          this.log.error(err);
           throw new GraphQLError(`Error retrieving event with id: ${id}`);
         }
         resolve(event);
@@ -120,11 +120,10 @@ class EventController {
   *  @return {Object[]} events
   */
   getAll() {
-    this.log.info("test");
     return new Promise((resolve, reject) => {
       this.db.events.find({}, (err, events) =>{
         if(err) {
-          console.log(err);
+          this.log.error(err);
           throw new GraphQLError(`Error returning all events`);
         }
         resolve(events);
@@ -154,7 +153,7 @@ class EventController {
     return new Promise((resolve, reject) => {
       this.db.statusByEventId(event_id, (err, status) => {
         if(err) {
-          console.log(err);
+          this.log.error(err);
           throw new GraphQLError(`Error retrieving status for event with id: ${id}`);
         }
         resolve(status[0].status);

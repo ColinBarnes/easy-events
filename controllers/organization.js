@@ -20,6 +20,7 @@ class OrganizationController {
     return new Promise((resolve, reject) => {
       this.db.organizations.save(org, (err, _org) => {
         if(err) {
+          this.log.error(err);
           throw new GraphQLError(`Could not save organization: ${org}`);
         }
         resolve(_org);
@@ -34,6 +35,7 @@ class OrganizationController {
         // verify that the org already exists
         this.db.organizations.findOne(org.id, (err, _org) => {
           if(err) {
+            this.log.error(err);
             throw new GraphqLError(`Can't find organization with id: ${org.id}`);
           }
           resolve(_org);
@@ -56,6 +58,7 @@ class OrganizationController {
     return new Promise((resolve, reject) => {
       this.db.organizations.findOne(id, (err, org) => {
         if(err) {
+          this.log.error(err);
           throw new GraphQLError(`Error retrieving organization with id: ${id}`);
         }
         resolve(org);
@@ -72,6 +75,7 @@ class OrganizationController {
     return new Promise((resolve, reject) => {
       this.db.organizations.find({},{limit: 20}, (err, orgs) =>{
         if(err) {
+          this.log.error(err);
           throw new GraphQLError(`Error returning all organizations`);
         }
         resolve(orgs);
@@ -88,6 +92,7 @@ class OrganizationController {
     return new Promise((resolve, reject) => {
       this.db.organizationByEventId(event_id, (err, org_arr) => {
         if(err) {
+          this.log.error(err);
           throw new GraphQLError(`Error returning all organization by id: ${event_id}`);
         }
         resolve(org_arr[0]);

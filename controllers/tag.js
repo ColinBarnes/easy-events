@@ -20,6 +20,7 @@ class TagController {
     return new Promise((resolve, reject) => {
       this.db.tags.save(tag, (err, _tag) => {
         if(err) {
+          this.log.error(err);
           throw new GraphQLError(`Error saving tag: ${tag}`)
         }
         resolve(_tag);
@@ -34,6 +35,7 @@ class TagController {
         // verify that the tag already exists
         this.db.tags.findOne(tag.id, (err, _tag) => {
           if(err) {
+            this.log.error(err);
             throw new GraphqLError(`Can't find organization with id: ${org.id}`);
           }
           resolve(_tag);
@@ -56,6 +58,7 @@ class TagController {
     return new Promise((resolve, reject) => {
       this.db.tags.findOne(id, (err, tag) => {
         if(err) {
+          this.log.error(err);
           throw new GraphQLError(`Error finding tag with id: ${id}`);
         }
         resolve(tag);
@@ -72,7 +75,7 @@ class TagController {
     return new Promise((resolve, reject) => {
       this.db.tags.find({},{limit: 20}, (err, tags) =>{
         if(err) {
-          console.log(err);
+          this.log.error(err);
           throw new GraphQLError(`Error returning all tags`);
         }
         resolve(tags);
@@ -98,7 +101,7 @@ class TagController {
     return new Promise((resolve, reject) => {
       this.db.tagsByEventId(event_id, (err, tags) => {
         if(err) {
-          console.log(err);
+          this.log.error(err);
           throw new GraphQLError(`Error returning tags by event id: ${event_id}`);
         }
         resolve(tags);
