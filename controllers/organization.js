@@ -3,9 +3,10 @@ import { GraphQLError } from 'graphql';
 import {getOrganization, getOrganizations} from '../schema/resolvers';
 
 class OrganizationController {
-  constructor(options) {
-    this.db = options.db;
-    this.ctx = options.ctx;
+  constructor(ctx) {
+    for (let prop in ctx) {
+      this[prop] = ctx[prop];
+    }
   }
 
   // Create ====================================================================

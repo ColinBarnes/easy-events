@@ -3,9 +3,10 @@ import { GraphQLError } from 'graphql';
 import {getTag, getTags} from '../schema/resolvers';
 
 class TagController {
-  constructor(options) {
-    this.db = options.db;
-    this.ctx = options.ctx;
+  constructor(ctx) {
+    for (let prop in ctx) {
+      this[prop] = ctx[prop];
+    }
   }
 
   // Create ====================================================================

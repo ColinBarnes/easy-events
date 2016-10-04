@@ -4,10 +4,10 @@ import { GraphQLError } from 'graphql';
 import {getEvent, getEvents} from '../schema/resolvers';
 
 class EventController {
-  constructor(options) {
-    this.db = options.db;
-    this.ctx = options.ctx;
-    this.log = this.ctx.log;
+  constructor(ctx) {
+    for (let prop in ctx) {
+      this[prop] = ctx[prop];
+    }
   }
 
   // Create ====================================================================

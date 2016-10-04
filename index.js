@@ -20,12 +20,15 @@ import TagController from './controllers/tag';
 
 // Context =====================================================================
 
-let ctx = {};
+let ctx = {
+  log: log,
+  db: db
+};
 
-ctx.log = log;
-ctx.Events = new EventController({db: db, ctx: ctx});
-ctx.Organizations = new OrganizationController({db: db, ctx: ctx});
-ctx.Tags = new TagController({db: db, ctx: ctx});
+ctx.ctx = ctx;
+ctx.Events = new EventController(ctx);
+ctx.Organizations = new OrganizationController(ctx);
+ctx.Tags = new TagController(ctx);
 
 
 let app = express();
