@@ -1,16 +1,17 @@
 import graphqlHTTP from 'express-graphql';
 import express from 'express';
 import {EventSchema} from './schema/schema';
+import config from './config';
 
 // Logging =====================================================================
 
 import bunyan from 'bunyan';
-let log = bunyan.createLogger({name: 'easy-events'});
+let log = bunyan.createLogger({name: config.name});
 
 // Database ====================================================================
 
 import massive from 'massive';
-let db = massive.connectSync({db: 'thecall'});
+let db = massive.connectSync({connectionString: config.database});
 
 // Controllers =================================================================
 
@@ -41,6 +42,6 @@ app.use('/graphql', graphqlHTTP({
 
 
 let server = app.listen(
-  3000,
+  config.port,
   () => log.info(`GraphQL running on ${server.address().port}`)
 );
