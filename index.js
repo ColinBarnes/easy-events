@@ -2,6 +2,7 @@ import graphqlHTTP from 'express-graphql';
 import express from 'express';
 import {EventSchema} from './schema/schema';
 import config from './config';
+import jwt from 'jsonwebtoken';
 
 // Logging =====================================================================
 
@@ -31,12 +32,48 @@ ctx.Events = new EventController(ctx);
 ctx.Organizations = new OrganizationController(ctx);
 ctx.Tags = new TagController(ctx);
 
+// Server ======================================================================
 
 let app = express();
 
-app.use('/graphql', graphqlHTTP({
+app.post('/guestlogin', (req, res) => {
+  let token = jwt.sign({
+    user: 'guest'
+  }, config.secret, {
+    expiresIn: '2h'
+  });
+
+  res.json({
+    success: true,
+    token: token
+  })
+});
+
+let authenticate = (req, res, next) => {
+  let token = req.headers.authorization.split(' ')[1];
+  if(token) {
+    jwt.verify(token, config.secret, (err, decoded) => {
+      if(err) {
+        return res.json({
+          success: false,
+          message: 'Failed to authenticate token'
+        });
+      } else {
+        req.decoded =  decoded;
+        next();
+      }
+    });
+  } else {
+    return res.status(403).send({
+      sucess: false,
+      message: 'No token provided. Please provide a Bearer token in the "Authorization" header.'
+    });
+  }
+}
+
+app.use('/graphql', authenticate, graphqlHTTP({
   schema: EventSchema,
-  graphiql: true,
+  graphiql: config.graphiql,
   context: ctx
 }));
 
