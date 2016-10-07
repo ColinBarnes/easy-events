@@ -50,7 +50,13 @@ app.post('/guestlogin', (req, res) => {
 });
 
 let authenticate = (req, res, next) => {
-  let token = req.headers.authorization.split(' ')[1];
+  let auth_header = req.headers.authorization;
+  let token;
+  
+  if(auth_header) {
+    token = auth_header.split(' ')[1];
+  }
+
   if(token) {
     jwt.verify(token, config.secret, (err, decoded) => {
       if(err) {
@@ -59,7 +65,7 @@ let authenticate = (req, res, next) => {
           message: 'Failed to authenticate token'
         });
       } else {
-        req.decoded =  decoded;
+        ctx.jwt = decoded;
         next();
       }
     });
