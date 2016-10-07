@@ -110,7 +110,17 @@ class OrganizationController {
   }
 
   // Update ====================================================================
-
+  update(organization) {
+    return new Promise((resolve, reject) => {
+      this.db.organizations.update(organization, (err, _organization) => {
+        if(err) {
+          this.log.error(err);
+          throw new GraphQLError(`Error updating organization: ${organization}`);
+        }
+        resolve(_organization);
+      });
+    });
+  }
   // Delete ====================================================================
 
 }

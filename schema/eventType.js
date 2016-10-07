@@ -97,6 +97,64 @@ export const eventType = new GraphQLObjectType({
   })
 });
 
+export const eventAttributesInputType = new GraphQLInputObjectType({
+  name: 'EventAtrributesInputType',
+  fields: () => ({
+    id: {
+      type: GraphQLString
+    },
+    title: {
+      type: GraphQLString,
+      description: "The name of the event"
+    },
+    description: {
+      type: GraphQLString,
+      description: "A description of the event"
+    },
+    organization: {
+      type: organizationAttributesInputType,
+      description: "The organization hosting the event"
+    },
+    start_time: {
+      type: DateTimeType,
+      description: "Starting date and time of the event in ISO 8601 format"
+    },
+    end_time: {
+      type: DateTimeType,
+      description: "Ending date and time of the event in ISO 8601 format"
+    },
+    address: {
+      type: GraphQLString,
+      description: "Street address"
+    },
+    city: {
+      type: GraphQLString,
+      description: "City"
+    },
+    state: {
+      type: GraphQLString,
+      description: "State abbreviation"
+    },
+    postal_code: {
+      type: GraphQLString,
+      description: "US postal code"
+    },
+    min_people: {
+      type: GraphQLInt,
+      description: "The minimum number of people needed for the event"
+    },
+    max_people: {
+      type: GraphQLInt,
+      description: "The maximum number of people needed for the event, 0 if there is no maximum"
+    },
+    tags: {
+      type: new GraphQLList(tagAttributesInputType),
+      description: "A list of tags associated with the event"
+    }
+  })
+});
+
+
 export const eventInputType = new GraphQLInputObjectType({
   name: 'EventInput',
   fields: () => ({

@@ -110,7 +110,17 @@ class TagController {
   }
 
   // Update ====================================================================
-
+  update(tag) {
+    return new Promise((resolve, reject) => {
+      this.db.tags.update(tag, (err, _tag) => {
+        if(err) {
+          this.log.error(err);
+          throw new GraphQLError(`Error updating tag: ${tag}`);
+        }
+        resolve(_tag);
+      });
+    });
+  }
   // Delete ====================================================================
 }
 

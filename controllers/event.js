@@ -161,7 +161,17 @@ class EventController {
     });
   }
   // Update ====================================================================
-
+  update(event) {
+    return new Promise((resolve, reject) => {
+      this.db.events.update(event, (err, _event) => {
+        if(err) {
+          this.log.error(err);
+          throw new GraphQLError(`Error updating event: ${event}`);
+        }
+        resolve(_event);
+      });
+    });
+  }
   // Delete ====================================================================
 }
 

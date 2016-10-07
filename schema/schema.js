@@ -8,9 +8,9 @@ import {
 } from 'graphql';
 
 // Manually definted types
-import {eventType, eventInputType} from './eventType';
-import {tagType, tagInputType} from './tagType';
-import {organizationType, organizationInputType} from './organizationType';
+import {eventType, eventAttributesInputType, eventInputType} from './eventType';
+import {tagType, tagAttributesInputType, tagInputType} from './tagType';
+import {organizationType, organizationAttributesInputType, organizationInputType} from './organizationType';
 
 // Schema ======================================================================
 
@@ -75,6 +75,14 @@ const mutationType = new GraphQLObjectType({
       },
       resolve: (root, {event}, ctx) => ctx.Events.create(event)
     },
+    updateEvent: {
+      type: eventType,
+      description: 'Update an event',
+      args: {
+        event: {type: eventAttributesInputType}
+      },
+      resolve: (root, {event}, ctx) => ctx.Events.update(event)
+    },
     creatOrganization: {
       type: organizationType,
       description: 'Add a new organization',
@@ -83,6 +91,14 @@ const mutationType = new GraphQLObjectType({
       },
       resolve: (root, {organization}, ctx) => ctx.Organizations.create(organization)
     },
+    updateOrganization: {
+      type: organizationType,
+      description: 'Update an organization',
+      args: {
+        organization: {type: organizationAttributesInputType}
+      },
+      resolve: (root, {organization}, ctx) => ctx.Organizations.update(organization)
+    },
     createTag: {
       type: tagType,
       description: 'Add a new tag',
@@ -90,6 +106,14 @@ const mutationType = new GraphQLObjectType({
         tag: {type: tagInputType}
       },
       resolve: (root, {tag}, ctx) => ctx.Tags.create(tag)
+    },
+    updateTag: {
+      type: tagType,
+      description: 'Update a tag',
+      args: {
+        tag: {type: tagAttributesInputType}
+      },
+      resolve: (root, {tag}, ctx) => ctx.Tags.update(tag)
     }
   })
 });
