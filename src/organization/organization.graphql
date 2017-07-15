@@ -1,0 +1,38 @@
+type OrganizationConnection {
+  edges: [OrganizationEdge]
+  pageInfo: PageInfo!
+}
+
+type OrganizationEdge {
+  cursor: String!
+  node: Organization
+}
+
+type Organization: Node {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type CreateOrganizationInput {
+  clientMutationId: String!
+  name: String!
+  description: String
+}
+
+type CreateOrganizationPayload {
+  clientMutationId: String!
+  organization: Organization
+}
+
+type UpdateOrganizationInput {
+  clientMutationId: String!
+  id: ID!
+  name: String
+  description: String
+}
+
+type UpdateOrganizationPayload {
+  clientMutationId: String!
+  organization: Organization
+}

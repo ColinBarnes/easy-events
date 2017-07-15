@@ -1,0 +1,18 @@
+type Query {
+  event(id: ID!): Event
+  events: EventConnection
+  organization(id: ID!): Organization
+  organizations: OrganizationConnection
+  tag(id: ID!): Tag
+  tags: TagConnection
+  node(id: ID!): Node
+}
+
+type Mutation {
+  createEvent(input: CreateEventInput): CreateEventPayload
+  updateEvent(input: UpdateEventInput): UpdateEventPayload
+  createOrganization(input: CreateOrganizationInput): CreateOrganizationPayload
+  updateOrganization(input: UpdateOrganizationInput): UpdateOrganizationPayload
+  createTag(input: CreateTagInput): CreateTagPayload
+  updateTag(input: UpdateTagInput): UpdateTagPayload
+}

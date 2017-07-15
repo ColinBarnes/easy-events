@@ -1,0 +1,35 @@
+type TagConnection {
+  edges: [TagEdge],
+  pageInfo: PageInfo!
+}
+
+type TagEdge {
+  cursor: String!
+  node: Tag
+}
+
+type Tag: Node {
+  id: ID!
+  name: String!
+}
+
+type CreateTagInput {
+  clientMutationId: String!
+  name: String!
+}
+
+type CreateTagPayload {
+  clientMutationId: String!
+  tag: Tag
+}
+
+type UpdateTagInput {
+  clientMutationId: String!
+  id: ID!
+  name: String
+}
+
+type UpdateTagPayload {
+  clientMutationId: String!
+  tag: Tag
+}

@@ -1,0 +1,103 @@
+enum Status {
+  PENDING
+  APPROVED
+  REMOVED
+}
+
+type EventConnection {
+  edges: [EventEdge]
+  pageInfo: PageInfo!
+}
+
+type EventEdge {
+  cursor: String!
+  node: Event
+}
+
+type Event: Node {
+  id: ID!
+  # A flag to show whether or not the event has been approved.
+  status: Status!
+  # The name of the event
+  title: String!
+  description: String!
+  # The organization hosting the event
+  organization: Organization
+  # Starting date and time of the event
+  start_time: DateTime!
+  # Ending date and time of the event
+  end_time: DateTime
+  # Street address
+  address: String
+  city: String
+  # State abbreviation
+  state: String
+  # US postal code
+  postal_code: String
+  # The minimum number of people needed for the event
+  min_people: Int
+  # The maximum number of people needed for the event, 0 if there is no maximum
+  max_people: Int
+  tags: TagConnection
+}
+
+type CreateEventInput {
+  clientMutationId: String!
+  # The name of the event
+  title: String!
+  description: String!
+  # The ID of the organization hosting the event
+  organizationId: ID!
+  # Starting date and time of the event in ISO 8601 format
+  start_time: DateTime!
+  # Ending date and time of the event in ISO 8601 format
+  end_time: DateTime
+  # Street address
+  address: String
+  city: String
+  # State abbreviation
+  state: String
+  # US postal code
+  postal_code: String
+  # The minimum number of people needed for the event
+  min_people: Int
+  # The maximum number of people needed for the event, 0 if there is no maximum
+  max_people: Int
+}
+
+type CreateEventPayload {
+  clientMutationId: String!
+  event: Event!
+}
+
+type UpdateEventInput {
+  clientMutationId: String!
+  id: ID!
+  # A flag to show whether or not the event has been approved.
+  status: Status
+  # The name of the event
+  title: String
+  description: String
+  # The ID of the organization hosting the event
+  organizationId: ID
+  # Starting date and time of the event
+  start_time: DateTime
+  # Ending date and time of the event
+  end_time: DateTime
+  # Street address
+  address: String
+  city: String
+  # State abbreviation
+  state: String
+  # US postal code
+  postal_code: String
+  # The minimum number of people needed for the event
+  min_people: Int
+  # The maximum number of people needed for the event, 0 if there is no maximum
+  max_people: Int
+}
+
+type UpdateEventPayload {
+  clientMutationId: String!
+  event: Event!
+}
